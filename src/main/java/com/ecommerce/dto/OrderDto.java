@@ -11,8 +11,8 @@ public class OrderDto {
     private UUID id;
     private Customer customer;
     private Product product;
-    private final int stock;
-    private final Status status;
+    private int stock;
+    private Status status;
 
     public OrderDto(UUID id, Customer customer, Product product, int stock, Status status) {
         this.id = id;
@@ -20,6 +20,10 @@ public class OrderDto {
         this.product = product;
         this.stock = stock;
         this.status = status;
+    }
+
+    public OrderDto() {
+        // EMPTY CONSTRUCTOR
     }
 
     public UUID getId() {
@@ -52,5 +56,16 @@ public class OrderDto {
 
     public Status getStatus() {
         return status;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDto{" +
+                "id=" + id +
+                ", customer=" + customer +
+                ", product=" + product +
+                ", stock=" + stock +
+                ", status=" + status +
+                '}';
     }
 }
