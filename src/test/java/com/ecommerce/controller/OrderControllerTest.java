@@ -1,8 +1,6 @@
 package com.ecommerce.controller;
 
-import com.ecommerce.dto.CustomerOrderRequestDto;
-import com.ecommerce.dto.OrderDto;
-import com.ecommerce.dto.OrderUpdateRequestDto;
+import com.ecommerce.dto.*;
 import com.ecommerce.entity.Customer;
 import com.ecommerce.entity.Order;
 import com.ecommerce.entity.Product;
@@ -43,10 +41,15 @@ public class OrderControllerTest {
     private Customer customer;
     private Product product;
 
+    private CustomerDto customerDto;
+    private ProductDto productDto;
+
     @BeforeEach
     public void setUp() {
         customer = new Customer("Mario", "Rossi", LocalDate.of(1990, 1, 1), "MRARSS90A01H501U", "mario.rossi@example.com");
         product = new Product("PRD001", "Laptop", 12);
+        productDto = new ProductDto(UUID.randomUUID(), product.getCode(), product.getName(), product.getStock(), product.getVersion());
+        customerDto = new CustomerDto(UUID.randomUUID(), customer.getName(), customer.getSurname(), customer.getBirthDate(), customer.getIdCode(), customer.getEmail());
     }
 
     @Test
@@ -75,7 +78,7 @@ public class OrderControllerTest {
         // GIVEN
         CustomerOrderRequestDto requestDto = new CustomerOrderRequestDto("MRARSS90A01H501U", "PRD001", 8);
 
-        OrderDto responseDto = new OrderDto(UUID.randomUUID(), customer, product, 5, Status.INSERTED);
+        OrderDto responseDto = new OrderDto(UUID.randomUUID(), customerDto, productDto, 5, Status.INSERTED);
 
         Mockito.when(orderService.createOrder(
                 Mockito.anyString(),
@@ -97,7 +100,7 @@ public class OrderControllerTest {
     @Test
     void shouldDeleteOrder() throws Exception {
         UUID orderId = UUID.randomUUID();
-        OrderDto responseDto = new OrderDto(orderId, customer, product, 5, Status.INSERTED);
+        OrderDto responseDto = new OrderDto(orderId, customerDto, productDto, 5, Status.INSERTED);
 
         Mockito.when(orderService.createOrder(
                 Mockito.anyString(),
@@ -115,7 +118,7 @@ public class OrderControllerTest {
     @Test
     void shouldNotUpdateOrder() throws Exception {
         UUID orderId = UUID.randomUUID();
-        OrderDto updatedOrder = new OrderDto(orderId, customer, product, 5, Status.INSERTED);
+        OrderDto updatedOrder = new OrderDto(orderId, customerDto, productDto, 5, Status.INSERTED);
         Mockito.when(orderService.findById(orderId)).thenReturn(null);
 
         OrderUpdateRequestDto updateRequest = new OrderUpdateRequestDto(Status.DELIVERED);

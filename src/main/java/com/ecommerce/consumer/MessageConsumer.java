@@ -1,7 +1,9 @@
 package com.ecommerce.consumer;
 
 import com.ecommerce.configuration.RabbitConfig;
+import com.ecommerce.dto.CustomerDto;
 import com.ecommerce.dto.OrderDto;
+import com.ecommerce.dto.ProductDto;
 import com.ecommerce.entity.Order;
 import com.ecommerce.service.OrderService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -24,7 +26,12 @@ public class MessageConsumer {
         Optional<Order> order = orderService.findById(orderId);
         if (order.isPresent()) {
             Order finalOrder = order.get();
-            OrderDto orderDto = new OrderDto(finalOrder.getUuid(), finalOrder.getCustomer(), finalOrder.getProduct(), finalOrder.getStock(), finalOrder.getStatus());
+            CustomerDto customerDto = new CustomerDto(finalOrder.getCustomer().getUuid(), finalOrder.getCustomer().getName(),
+                    finalOrder.getCustomer().getSurname(), finalOrder.getCustomer().getBirthDate(), finalOrder.getCustomer().getIdCode(),
+                    finalOrder.getCustomer().getEmail());
+            ProductDto productDto = new ProductDto(finalOrder.getProduct().getUuid(), finalOrder.getProduct().getCode(), finalOrder.getProduct().getName(),
+                    finalOrder.getProduct().getStock(), finalOrder.getProduct().getVersion());
+            OrderDto orderDto = new OrderDto(finalOrder.getUuid(), customerDto, productDto, finalOrder.getStock(), finalOrder.getStatus());
             System.out.println("Ricevuto: " + orderDto);
         }
     }

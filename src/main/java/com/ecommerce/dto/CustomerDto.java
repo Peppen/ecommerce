@@ -48,4 +48,16 @@ public class CustomerDto {
     public String getEmail() {
         return email;
     }
+
+    @Override
+    public String toString() {
+        return "CustomerDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", birthDate=" + birthDate +
+                ", idCode='" + idCode + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

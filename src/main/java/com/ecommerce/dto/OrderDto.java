@@ -9,12 +9,12 @@ import java.util.UUID;
 public class OrderDto {
 
     private UUID id;
-    private Customer customer;
-    private Product product;
+    private CustomerDto customer;
+    private ProductDto product;
     private int stock;
     private Status status;
 
-    public OrderDto(UUID id, Customer customer, Product product, int stock, Status status) {
+    public OrderDto(UUID id, CustomerDto customer, ProductDto product, int stock, Status status) {
         this.id = id;
         this.customer = customer;
         this.product = product;
@@ -34,19 +34,19 @@ public class OrderDto {
         this.id = id;
     }
 
-    public Customer getCustomer() {
+    public CustomerDto getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(CustomerDto customer) {
         this.customer = customer;
     }
 
-    public Product getProduct() {
+    public ProductDto getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(ProductDto product) {
         this.product = product;
     }
 

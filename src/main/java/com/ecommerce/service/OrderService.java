@@ -1,5 +1,7 @@
 package com.ecommerce.service;
 
+import com.ecommerce.dto.CustomerDto;
+import com.ecommerce.dto.ProductDto;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -54,8 +56,12 @@ public class OrderService {
         Order order = new Order(realCustomer, realProduct, stock);
         order.setStatus(Status.INSERTED);
         realProduct.setStock(realProduct.getStock() - stock);
+        productRepository.save(realProduct);
         Order saved = orderRepository.save(order);
-        return new OrderDto(saved.getUuid(), saved.getCustomer(), saved.getProduct(), saved.getStock(), saved.getStatus());
+        Customer c = saved.getCustomer();
+        CustomerDto customerDto = new CustomerDto(c.getUuid(), c.getName(), c.getSurname(), c.getBirthDate(), c.getIdCode(), c.getEmail());
+        ProductDto productDto = new ProductDto(saved.getProduct().getUuid(), saved.getProduct().getCode(), saved.getProduct().getName(), saved.getProduct().getStock(), saved.getProduct().getVersion());
+        return new OrderDto(saved.getUuid(), customerDto, productDto, saved.getStock(), saved.getStatus());
     }
 
     public Page<Order> findAll(Pageable pageable) {
@@ -87,7 +93,10 @@ public class OrderService {
                 throw new ConflictException("Order already inserted!");
             }
             realOrder.setStatus(orderUpdateRequest.getStatus());
-            return new OrderDto(realOrder.getUuid(), realOrder.getCustomer(), realOrder.getProduct(), realOrder.getStock(), realOrder.getStatus());
+            Customer customer_1 = realOrder.getCustomer();
+            CustomerDto customerDto = new CustomerDto(customer_1.getUuid(), customer_1.getName(), customer_1.getSurname(), customer_1.getBirthDate(), customer_1.getIdCode(), customer_1.getEmail());
+            ProductDto productDto = new ProductDto(realOrder.getProduct().getUuid(), realOrder.getProduct().getCode(), realOrder.getProduct().getName(), realOrder.getProduct().getStock(), realOrder.getProduct().getVersion());
+            return new OrderDto(realOrder.getUuid(), customerDto, productDto, realOrder.getStock(), realOrder.getStatus());
         }
     }
 

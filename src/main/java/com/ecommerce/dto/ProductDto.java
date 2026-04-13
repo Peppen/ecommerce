@@ -37,4 +37,15 @@ public class ProductDto {
     public int getStock() {
         return stock;
     }
+
+    @Override
+    public String toString() {
+        return "ProductDto{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", stock=" + stock +
+                ", version=" + version +
+                '}';
+    }
 }
